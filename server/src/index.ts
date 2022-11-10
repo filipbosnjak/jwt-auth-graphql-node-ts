@@ -2,6 +2,8 @@ import express from 'express'
 import { Request, Response } from "express"
 import "reflect-metadata"
 import {ApolloServer} from 'apollo-server-express'
+import { buildSchema } from 'type-graphql'
+import {UserResolver} from './UserResolver'
 
 // Function that calls itself
 // (() => {})()
@@ -18,8 +20,8 @@ import {ApolloServer} from 'apollo-server-express'
     })
 
     //Apollo server
-    const apolloServer = new ApolloServer({
-        typeDefs: `
+    /**
+     * typeDefs: `
         type Query {
             hello: String
         }
@@ -29,6 +31,11 @@ import {ApolloServer} from 'apollo-server-express'
                 hello: () => "some string from resolver"
             }
         }
+     */
+    const apolloServer = new ApolloServer({
+        schema: await buildSchema({
+            resolvers: [UserResolver]
+        })
     })
 
     await apolloServer.start()
