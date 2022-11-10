@@ -1,6 +1,7 @@
 import express from 'express'
 import { Request, Response } from "express"
 import "reflect-metadata"
+import {ApolloServer} from 'apollo-server-express'
 
 // Function that calls itself
 // (() => {})()
@@ -16,8 +17,28 @@ import "reflect-metadata"
         res.send("express")
     })
 
+    //Apollo server
+    const apolloServer = new ApolloServer({
+        typeDefs: `
+        type Query {
+            hello: String
+        }
+        `,
+        resolvers: {
+            Query: {
+                hello: () => "some string from resolver"
+            }
+        }
+    })
+
+    await apolloServer.start()
+
+    apolloServer.applyMiddleware({app})
+
     app.listen(4000, () => {
         console.log("express server started");
+        console.log(`graphql playground at ${apolloServer.graphqlPath}`);
+        
         
     })
 })()
