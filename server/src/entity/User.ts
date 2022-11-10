@@ -6,13 +6,12 @@ export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
-    firstName: string
-
-    @Column()
+    @Column('varchar', {
+        unique: true
+    })
     email: string
 
-    @Column()
-    password: number
+    @Column('varchar')
+    password: string
 
 }

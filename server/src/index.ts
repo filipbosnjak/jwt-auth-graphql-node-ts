@@ -4,7 +4,7 @@ import "reflect-metadata"
 import {ApolloServer} from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 import {UserResolver} from './UserResolver'
-
+import { AppDataSource } from './data-source'
 // Function that calls itself
 // (() => {})()
 
@@ -18,6 +18,9 @@ import {UserResolver} from './UserResolver'
     ) => {
         res.send("express")
     })
+
+    //Create db connection
+    await AppDataSource.initialize()
 
     //Apollo server
     /**
