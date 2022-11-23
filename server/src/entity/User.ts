@@ -1,11 +1,15 @@
+import { Field, Int, ObjectType } from "type-graphql"
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm"
 
+@ObjectType()
 @Entity('users')
 export class User extends BaseEntity {
 
+    @Field(() => Int)
     @PrimaryGeneratedColumn()
     id: number
 
+    @Field()
     @Column('varchar', {
         unique: true
     })
@@ -13,5 +17,4 @@ export class User extends BaseEntity {
 
     @Column('varchar')
     password: string
-
 }

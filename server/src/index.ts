@@ -3,8 +3,11 @@ import { Request, Response } from "express"
 import "reflect-metadata"
 import {ApolloServer} from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
-import {UserResolver} from './UserResolver'
-import { AppDataSource } from './data-source'
+import { UserResolver } from "./resolvers/UserResolver";
+import { AppDataSource } from "./data-source";
+import { PostResolver } from "./resolvers/PostResolver";
+import "dotenv/config";
+
 // Function that calls itself
 // (() => {})()
 
@@ -12,15 +15,14 @@ import { AppDataSource } from './data-source'
 
     const app = express();
 
-    app.get('/', (
-        _: Request, 
-        res: Response
-    ) => {
-        res.send("express")
-    })
+    console.log(process.env.ACCESS_TOKEN_SECRET);
+
+    app.get("/", (_: Request, res: Response) => {
+      res.send("express");
+    });
 
     //Create db connection
-    await AppDataSource.initialize()
+    await AppDataSource.initialize();
 
     //Apollo server
     /**
@@ -36,21 +38,20 @@ import { AppDataSource } from './data-source'
         }
      */
     const apolloServer = new ApolloServer({
-        schema: await buildSchema({
-            resolvers: [UserResolver]
-        })
-    })
+      schema: await buildSchema({
+        resolvers: [UserResolver, PostResolver],
+      }),
+      context: ({ req, res }) => ({ req, res }),
+    });
 
-    await apolloServer.start()
+    await apolloServer.start();
 
-    apolloServer.applyMiddleware({app})
+    apolloServer.applyMiddleware({ app });
 
-    app.listen(4000, () => {
-        console.log("express server started");
-        console.log(`graphql playground at ${apolloServer.graphqlPath}`);
-        
-        
-    })
+    app.listen(4040, () => {
+      console.log("express server started");
+      console.log(`graphql playground at ${apolloServer.graphqlPath}`);
+    });
 })()
 
 // AppDataSource.initialize().then(async () => {
