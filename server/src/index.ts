@@ -15,7 +15,7 @@ import "dotenv/config";
 
     const app = express();
 
-    console.log(process.env.ACCESS_TOKEN_SECRET);
+    console.log(process.env.REFRESH_TOKEN_SECRET);
 
     app.get("/", (_: Request, res: Response) => {
       res.send("express");

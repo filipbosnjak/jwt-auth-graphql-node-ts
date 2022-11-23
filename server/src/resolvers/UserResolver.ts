@@ -10,7 +10,7 @@ import {
 import { User } from "../entity/User";
 import { compare, hash } from "bcryptjs";
 import { MyContext } from "src/types/context";
-import { createAccessToken, createRefreshToken } from "src/authentication/auth";
+import { createAccessToken, createRefreshToken } from "../authentication/auth";
 
 @ObjectType()
 class LoginResponse {

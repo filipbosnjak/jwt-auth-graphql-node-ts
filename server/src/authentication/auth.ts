@@ -1,6 +1,5 @@
 import { User } from "src/entity/User";
 import { sign } from "jsonwebtoken";
-import "dotenv/config";
 
 export const createAccessToken = (user: User) => {
   return sign(
